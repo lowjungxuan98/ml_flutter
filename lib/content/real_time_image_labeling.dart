@@ -14,16 +14,22 @@ class RealTimeImageLabeling extends StatefulWidget {
 class _RealTimeImageLabelingState extends State<RealTimeImageLabeling> {
   late CameraController controller;
   String result = "results to be shown here";
+  dynamic imageLabeler;
+  bool isBusy = false;
+
   @override
   void initState() {
     super.initState();
-    cameras;
+    final ImageLabelerOptions options = ImageLabelerOptions(confidenceThreshold: 0.5);
+    imageLabeler = ImageLabeler(options: options);
     controller = CameraController(cameras[0], ResolutionPreset.high);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
-      controller.startImageStream((image) => {});
+      controller.startImageStream((image) => {
+            if (isBusy == false) {img = image, doImageLabeling(), isBusy = true}
+          });
       setState(() {});
     }).catchError((Object e) {
       if (e is CameraException) {
@@ -41,6 +47,22 @@ class _RealTimeImageLabelingState extends State<RealTimeImageLabeling> {
 
   doImageLabeling() async {
     result = "";
+    InputImage inputImage = getInputImage();
+    final List<ImageLabel> labels = await imageLabeler.processImage(inputImage);
+
+    for (ImageLabel label in labels) {
+      final String text = label.label;
+      final int index = label.index;
+      final double confidence = label.confidence;
+      result += '$text ${confidence.toStringAsFixed(2)}\n';
+    }
+    if (mounted) {
+      setState(() {
+        result;
+      });
+    }
+
+    isBusy = false;
   }
 
   CameraImage? img;

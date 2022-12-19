@@ -1,4 +1,4 @@
-# ml_flutter
+# Machine Learning Flutter
 
 A new Flutter project.
 
