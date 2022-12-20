@@ -21,8 +21,7 @@ class _ImageLabelingState extends State<ImageLabeling> {
   void initState() {
     super.initState();
     imagePicker = ImagePicker();
-    final ImageLabelerOptions options =
-        ImageLabelerOptions(confidenceThreshold: 0.5);
+    final ImageLabelerOptions options = ImageLabelerOptions(confidenceThreshold: 0.5);
     imageLabeler = ImageLabeler(options: options);
   }
 
@@ -41,8 +40,7 @@ class _ImageLabelingState extends State<ImageLabeling> {
   }
 
   _imgFromGallery() async {
-    XFile? pickedFile =
-        await imagePicker.pickImage(source: ImageSource.gallery);
+    XFile? pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
@@ -52,7 +50,6 @@ class _ImageLabelingState extends State<ImageLabeling> {
   }
 
   doImageLabeling() async {
-    debugPrint("haha");
     InputImage inputImage = InputImage.fromFile(_image!);
     final List<ImageLabel> labels = await imageLabeler.processImage(inputImage);
 
@@ -102,9 +99,7 @@ class _ImageLabelingState extends State<ImageLabeling> {
                     ]),
                     Center(
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            shadowColor: Colors.transparent),
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent),
                         onPressed: _imgFromGallery,
                         onLongPress: _imgFromCamera,
                         child: Container(
@@ -135,8 +130,7 @@ class _ImageLabelingState extends State<ImageLabeling> {
                   child: Text(
                     result,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        fontSize: 25, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],

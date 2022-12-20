@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ml_flutter/content/custom_model_image_labeling.dart';
 import 'package:ml_flutter/content/face_detection.dart';
 import 'package:ml_flutter/content/image_labeling.dart';
 import 'package:ml_flutter/content/real_time_image_labeling.dart';
 
+import 'content/real_time_face_detection.dart';
 import 'model/page_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,6 +19,8 @@ class _HomePageState extends State<HomePage> {
     PageModel<ImageLabeling>(label: 'Image Labeling', destination: const ImageLabeling()),
     PageModel<RealTimeImageLabeling>(label: 'Real Time Image Labeling', destination: const RealTimeImageLabeling()),
     PageModel<FaceDetection>(label: 'Face Detection', destination: const FaceDetection()),
+    PageModel<RealTimeFaceDetection>(label: 'Real Time Face Detection', destination: const RealTimeFaceDetection()),
+    PageModel<CustomModelImageLabeling>(label: 'Custom Model Image Labeling', destination: const CustomModelImageLabeling()),
   ];
 
   @override
