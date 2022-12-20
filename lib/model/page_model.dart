@@ -1,6 +1,6 @@
-class PageModel {
+class PageModel<T> {
   String? label;
-  dynamic destination;
+  T? destination;
 
   PageModel({this.label, this.destination});
 

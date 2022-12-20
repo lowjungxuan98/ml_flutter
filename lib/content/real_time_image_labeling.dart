@@ -35,10 +35,10 @@ class _RealTimeImageLabelingState extends State<RealTimeImageLabeling> {
       if (e is CameraException) {
         switch (e.code) {
           case 'CameraAccessDenied':
-            print('User denied camera access.');
+            debugPrint('User denied camera access.');
             break;
           default:
-            print('Handle other errors.');
+            debugPrint('Handle other errors.');
             break;
         }
       }
@@ -52,7 +52,7 @@ class _RealTimeImageLabelingState extends State<RealTimeImageLabeling> {
 
     for (ImageLabel label in labels) {
       final String text = label.label;
-      final int index = label.index;
+      // final int index = label.index;
       final double confidence = label.confidence;
       result += '$text ${confidence.toStringAsFixed(2)}\n';
     }

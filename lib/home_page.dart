@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ml_flutter/content/face_detection.dart';
 import 'package:ml_flutter/content/image_labeling.dart';
 import 'package:ml_flutter/content/real_time_image_labeling.dart';
 
@@ -13,8 +14,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<PageModel> pages = [
-    PageModel(label: 'Image Labeling', destination: const ImageLabeling()),
-    PageModel(label: 'Real Time Image Labeling', destination: const RealTimeImageLabeling()),
+    PageModel<ImageLabeling>(label: 'Image Labeling', destination: const ImageLabeling()),
+    PageModel<RealTimeImageLabeling>(label: 'Real Time Image Labeling', destination: const RealTimeImageLabeling()),
+    PageModel<FaceDetection>(label: 'Face Detection', destination: const FaceDetection()),
   ];
 
   @override
