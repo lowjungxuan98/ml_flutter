@@ -10,14 +10,14 @@ import 'package:ml_flutter/main.dart';
 import 'package:path/path.dart' show dirname;
 import 'package:path_provider/path_provider.dart';
 
-class RealTimeClassificationImages extends StatefulWidget {
-  const RealTimeClassificationImages({super.key});
+class ClassificationImagesRealTime extends StatefulWidget {
+  const ClassificationImagesRealTime({super.key});
 
   @override
-  State<RealTimeClassificationImages> createState() => _RealTimeClassificationImagesState();
+  State<ClassificationImagesRealTime> createState() => _ClassificationImagesRealTimeState();
 }
 
-class _RealTimeClassificationImagesState extends State<RealTimeClassificationImages> {
+class _ClassificationImagesRealTimeState extends State<ClassificationImagesRealTime> {
   late CameraController controller;
   CameraImage? img;
   bool isBusy = false;

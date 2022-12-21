@@ -73,7 +73,7 @@ class _ObjectDetectionState extends State<ObjectDetection> {
   }
 
   createObjectDetector() async {
-    final modelPath = await _getModel('assets/ml/mobilenet.tflite');
+    final modelPath = await _getModel('assets/ml/fruitsefficientnet.tflite');
     final options = LocalObjectDetectorOptions(modelPath: modelPath, classifyObjects: true, multipleObjects: true, mode: DetectionMode.single);
     objectDetector = ObjectDetector(options: options);
   }
@@ -100,9 +100,12 @@ class _ObjectDetectionState extends State<ObjectDetection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Object Detection"),
+      ),
       body: Container(
         decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('images/bg.jpg'), fit: BoxFit.cover),
+          image: DecorationImage(image: AssetImage('images/bg_obj.jpg'), fit: BoxFit.cover),
         ),
         child: Column(
           children: [

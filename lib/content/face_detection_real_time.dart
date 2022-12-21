@@ -6,14 +6,14 @@ import 'package:ml_flutter/main.dart';
 
 import '../components/face_detector_paint.dart';
 
-class RealTimeFaceDetection extends StatefulWidget {
-  const RealTimeFaceDetection({super.key});
+class FaceDetectionRealTime extends StatefulWidget {
+  const FaceDetectionRealTime({super.key});
 
   @override
-  State<RealTimeFaceDetection> createState() => _RealTimeFaceDetectionState();
+  State<FaceDetectionRealTime> createState() => _FaceDetectionRealTimeState();
 }
 
-class _RealTimeFaceDetectionState extends State<RealTimeFaceDetection> {
+class _FaceDetectionRealTimeState extends State<FaceDetectionRealTime> {
   dynamic controller;
   bool isBusy = false;
   dynamic faceDetector;
