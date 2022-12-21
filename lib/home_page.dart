@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ml_flutter/content/custom_model_image_labeling.dart';
-import 'package:ml_flutter/content/custom_model_real_time_image_labeling.dart';
+import 'package:ml_flutter/content/classification_images_real_time.dart';
 import 'package:ml_flutter/content/face_detection.dart';
-import 'package:ml_flutter/content/image_labeling.dart';
-import 'package:ml_flutter/content/real_time_image_labeling.dart';
+import 'package:ml_flutter/content/object_detection.dart';
 
 import 'content/classification_images.dart';
-import 'content/real_time_face_detection.dart';
+import 'content/face_detection_real_time.dart';
 import 'model/page_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,14 +16,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<PageModel> pages = [
-    PageModel<ImageLabeling>(label: 'Image Labeling', destination: const ImageLabeling()),
-    PageModel<RealTimeImageLabeling>(label: 'Real Time Image Labeling', destination: const RealTimeImageLabeling()),
     PageModel<FaceDetection>(label: 'Face Detection', destination: const FaceDetection()),
-    PageModel<RealTimeFaceDetection>(label: 'Real Time Face Detection', destination: const RealTimeFaceDetection()),
-    PageModel<CustomModelImageLabeling>(label: 'Custom Model Image Labeling', destination: const CustomModelImageLabeling()),
-    PageModel<CustomModelRealTimeImageLabeling>(label: 'Custom Model Real Time Image Labeling', destination: const CustomModelRealTimeImageLabeling()),
+    PageModel<RealTimeFaceDetection>(label: 'Face Detection (Real Time)', destination: const RealTimeFaceDetection()),
     PageModel<ClassificationImages>(label: "Classification Images", destination: const ClassificationImages()),
-  ];
+    PageModel<RealTimeClassificationImages>(label: 'Classification Images (Real Time)', destination: const RealTimeClassificationImages()),
+    PageModel<ObjectDetection>(label: 'Object Detection', destination: const ObjectDetection()),
+  ]..sort((a, b) => a.label!.compareTo(b.label!));
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +34,10 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(pages[index].label ?? ""),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => pages[index].destination),
-              );
-            },
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => pages[index].destination),
+            ),
           );
         },
       ),

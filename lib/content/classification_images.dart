@@ -1,13 +1,12 @@
-import 'package:flutter/foundation.dart';
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:ml_flutter/main.dart';
 
 class ClassificationImages extends StatefulWidget {
   const ClassificationImages({super.key});
@@ -88,7 +87,7 @@ class _ClassificationImagesState extends State<ClassificationImages> {
     final List<ImageLabel> labels = await imageLabeler.processImage(inputImage);
     for (ImageLabel label in labels) {
       final String text = label.label;
-      final int index = label.index;
+      // final int index = label.index;
       final double confidence = label.confidence;
       result += "$text   ${confidence.toStringAsFixed(2)}\n";
     }
@@ -126,7 +125,7 @@ class _ClassificationImagesState extends State<ClassificationImages> {
                     ]),
                     Center(
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.transparent, shadowColor: Colors.transparent),
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent),
                         onPressed: _imgFromGallery,
                         onLongPress: _imgFromCamera,
                         child: Container(
@@ -138,10 +137,10 @@ class _ClassificationImagesState extends State<ClassificationImages> {
                                   height: 495,
                                   fit: BoxFit.fill,
                                 )
-                              : Container(
+                              : const SizedBox(
                                   width: 340,
                                   height: 330,
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.camera_alt,
                                     color: Colors.black,
                                     size: 100,

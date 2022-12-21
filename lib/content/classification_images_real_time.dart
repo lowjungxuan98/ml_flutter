@@ -1,40 +1,44 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:ml_flutter/main.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' show dirname;
 import 'package:path_provider/path_provider.dart';
 
-class CustomModelRealTimeImageLabeling extends StatefulWidget {
-  const CustomModelRealTimeImageLabeling({super.key});
+class RealTimeClassificationImages extends StatefulWidget {
+  const RealTimeClassificationImages({super.key});
 
   @override
-  State<CustomModelRealTimeImageLabeling> createState() => _CustomModelRealTimeImageLabelingState();
+  State<RealTimeClassificationImages> createState() => _RealTimeClassificationImagesState();
 }
 
-class _CustomModelRealTimeImageLabelingState extends State<CustomModelRealTimeImageLabeling> {
+class _RealTimeClassificationImagesState extends State<RealTimeClassificationImages> {
   late CameraController controller;
-  String result = "results to be shown here";
-  dynamic imageLabeler;
+  CameraImage? img;
   bool isBusy = false;
+  String result = "";
 
+  //TODO declare ImageLabeler
+  dynamic imageLabeler;
   @override
   void initState() {
     super.initState();
-    final ImageLabelerOptions options = ImageLabelerOptions(confidenceThreshold: 0.5);
-    imageLabeler = ImageLabeler(options: options);
+    //TODO initialize labeler
+    createLabeler();
+
+    //TODO initialize the controller
     controller = CameraController(cameras[0], ResolutionPreset.high);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
       controller.startImageStream((image) => {
-            if (isBusy == false) {img = image, doImageLabeling(), isBusy = true}
+            if (!isBusy) {isBusy = true, img = image, doImageLabeling()}
           });
       setState(() {});
     }).catchError((Object e) {
@@ -52,8 +56,8 @@ class _CustomModelRealTimeImageLabelingState extends State<CustomModelRealTimeIm
   }
 
   createLabeler() async {
-    final modelPath = await _getModel('assets/ml/mobilenet.tflite');
-    final options = LocalLabelerOptions(modelPath: modelPath);
+    final modelPath = await _getModel('assets/ml/fruitsefficientnet.tflite');
+    final options = LocalLabelerOptions(modelPath: modelPath, confidenceThreshold: 0.2);
     imageLabeler = ImageLabeler(options: options);
   }
 
@@ -73,25 +77,23 @@ class _CustomModelRealTimeImageLabelingState extends State<CustomModelRealTimeIm
 
   doImageLabeling() async {
     result = "";
-    InputImage inputImage = getInputImage();
-    final List<ImageLabel> labels = await imageLabeler.processImage(inputImage);
-
+    InputImage inputImg = getInputImage();
+    final List<ImageLabel> labels = await imageLabeler.processImage(inputImg);
     for (ImageLabel label in labels) {
       final String text = label.label;
       // final int index = label.index;
       final double confidence = label.confidence;
-      result += '$text ${confidence.toStringAsFixed(2)}\n';
+      result += "$text   ${confidence.toStringAsFixed(2)}\n";
     }
-    if (mounted) {
-      setState(() {
-        result;
-      });
+    if (!mounted) {
+      return;
     }
-
-    isBusy = false;
+    setState(() {
+      result;
+      isBusy = false;
+    });
   }
 
-  CameraImage? img;
   InputImage getInputImage() {
     final WriteBuffer allBytes = WriteBuffer();
     for (final Plane plane in img!.planes) {
@@ -138,9 +140,28 @@ class _CustomModelRealTimeImageLabelingState extends State<CustomModelRealTimeIm
 
   @override
   Widget build(BuildContext context) {
+    if (!controller.value.isInitialized) {
+      return Container();
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text("Custom Model Real Time Image Labeling"),
+        title: const Text("Custom Model Real Time Image Labeling"),
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          CameraPreview(controller),
+          Container(
+            margin: const EdgeInsets.only(left: 10, bottom: 10),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                result,
+                style: const TextStyle(color: Colors.white, fontSize: 25),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

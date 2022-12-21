@@ -150,7 +150,7 @@ class _RealTimeFaceDetectionState extends State<RealTimeFaceDetection> {
         Positioned(
           top: 0.0,
           left: 0.0,
-          width: size.width - 150,
+          width: size.width,
           height: size.height - 250,
           child: Container(
             child: (controller.value.isInitialized)
