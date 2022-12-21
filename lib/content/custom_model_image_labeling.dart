@@ -3,6 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 class CustomModelImageLabeling extends StatefulWidget {
   const CustomModelImageLabeling({super.key});
@@ -21,8 +25,7 @@ class _CustomModelImageLabelingState extends State<CustomModelImageLabeling> {
   void initState() {
     super.initState();
     imagePicker = ImagePicker();
-    final ImageLabelerOptions options = ImageLabelerOptions(confidenceThreshold: 0.5);
-    imageLabeler = ImageLabeler(options: options);
+    createLabeler();
   }
 
   @override
@@ -47,6 +50,26 @@ class _CustomModelImageLabelingState extends State<CustomModelImageLabeling> {
         doImageLabeling();
       });
     }
+  }
+
+  createLabeler() async {
+    final modelPath = await _getModel('assets/ml/mobilenet.tflite');
+    final options = LocalLabelerOptions(modelPath: modelPath);
+    imageLabeler = ImageLabeler(options: options);
+  }
+
+  Future<String> _getModel(String assetPath) async {
+    if (Platform.isAndroid) {
+      return 'flutter_assets/$assetPath';
+    }
+    final path = '${(await getApplicationSupportDirectory()).path}/$assetPath';
+    await Directory(dirname(path)).create(recursive: true);
+    final file = File(path);
+    if (!await file.exists()) {
+      final byteData = await rootBundle.load(assetPath);
+      await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    }
+    return file.path;
   }
 
   doImageLabeling() async {

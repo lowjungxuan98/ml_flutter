@@ -72,7 +72,7 @@ class _FaceDetectionState extends State<FaceDetection> {
     result = "";
     InputImage inputImage = InputImage.fromFile(_image!);
     faces = await faceDetector.processImage(inputImage);
-    print("Face Type is ${faces[0].toString()}");
+    // print("Face Type is ${faces[0].toString()}");
     for (Face f in faces) {
       if (f.smilingProbability! > 0.5) {
         result += "Smiling";

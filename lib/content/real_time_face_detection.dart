@@ -60,7 +60,9 @@ class _RealTimeFaceDetectionState extends State<RealTimeFaceDetection> {
   doFaceDetectionOnFrame() async {
     var frameImg = getInputImage();
     List<Face> faces = await faceDetector.processImage(frameImg);
-    if (!mounted) {}
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _scanResults = faces;
       isBusy = false;
@@ -148,7 +150,7 @@ class _RealTimeFaceDetectionState extends State<RealTimeFaceDetection> {
         Positioned(
           top: 0.0,
           left: 0.0,
-          width: size.width,
+          width: size.width - 150,
           height: size.height - 250,
           child: Container(
             child: (controller.value.isInitialized)
