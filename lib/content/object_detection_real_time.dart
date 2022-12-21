@@ -36,7 +36,7 @@ class _ObjectDetectionRealTimeState extends State<ObjectDetectionRealTime> {
   initializeCamera() async {
     //TODO initialize detector
     const mode = DetectionMode.stream;
-    final modelPath = await _getModel('assets/ml/fruitsefficientnet.tflite');
+    final modelPath = await _getModel('assets/ml/fruitsresnet.tflite');
     final options = LocalObjectDetectorOptions(modelPath: modelPath, classifyObjects: true, multipleObjects: true, mode: mode);
     objectDetector = ObjectDetector(options: options);
 
@@ -80,6 +80,9 @@ class _ObjectDetectionRealTimeState extends State<ObjectDetectionRealTime> {
     var frameImg = getInputImage();
     List<DetectedObject> objects = await objectDetector.processImage(frameImg);
     print("len= ${objects.length}");
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _scanResults = objects;
     });

@@ -130,14 +130,13 @@ class _FaceDetectionRealTimeState extends State<FaceDetectionRealTime> {
       camDirec = CameraLensDirection.back;
       description = cameras[0];
     }
-    await controller.stopImageStream();
-    await controller.dispose();
-    controller = null;
+    // await controller.stopImageStream();
+    // await controller.dispose();
+    // controller = null;
     setState(() {
       controller;
       isLoading = false;
     });
-
     initializeCamera();
   }
 
